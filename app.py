@@ -14,7 +14,7 @@ class User(db.Model):
     name = db.Column(db.String(50), nullable=False)
     status = db.Column(db.String(50), nullable=False)
     species = db.Column(db.String(50), nullable=False)
-    type_char = db.Column(db.String(50), nullable=False)
+    type_char = db.Column(db.String(50), nullable=True)
     gender = db.Column(db.String(50), nullable=False)
     origin_name = db.Column(db.String(50), nullable=False)
     location_name = db.Column(db.String(50), nullable=False)
