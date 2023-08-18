@@ -1,8 +1,11 @@
-# rickandmorty-backend
+# Rick and Morty backend API
 
 This is a backend API who returns all characters from the Rick and Morty show.
+
 You can also get a specific character.
+
 It gets the characters with a pagination of 20.
+
 You can specify also a page.
 
 ## Installation
