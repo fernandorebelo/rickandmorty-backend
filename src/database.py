@@ -1,5 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
+from datetime import datetime
+
 
 db = SQLAlchemy()
 ma = Marshmallow()
@@ -25,3 +27,25 @@ class CharacterSchema(ma.Schema):
 
 
 character_schema = CharacterSchema(many=True)
+
+class ExceptionTracker(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    error_message = db.Column(db.String(1000), nullable=False)
+    request_headers = db.Column(db.JSON, nullable=True)
+    ip_address = db.Column(db.String(45), nullable=True)
+    user_agent = db.Column(db.String(255), nullable=True)
+    endpoint = db.Column(db.String(255), nullable=True)
+    http_method = db.Column(db.String(10), nullable=True)
+    traceback = db.Column(db.Text, nullable=True)
+
+class SearchLogs(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    request_headers = db.Column(db.JSON, nullable=True)
+    ip_address = db.Column(db.String(45), nullable=True)
+    user_agent = db.Column(db.String(255), nullable=True)
+    endpoint = db.Column(db.String(255), nullable=True)
+    success = db.Column(db.Boolean, nullable = False)
+    search_result_cached = db.Column(db.Boolean, nullable = False)
+    status_code = db.Column(db.Integer, nullable = False)

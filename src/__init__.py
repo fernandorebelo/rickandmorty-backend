@@ -1,24 +1,42 @@
-from flask import Flask, request, jsonify
-from flask_cors import CORS, cross_origin
-from src.database import db, ma, character_schema, User
+from flask import Flask, jsonify
+from src.database import db, ma
+from src.routes import CORS, character_bp
+from flasgger import Swagger
+from src.config.swagger import template, swagger_config
+from src.constants.http_status_codes import *
+from src.utils.exception_tracker_log import log_exception
+
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:root@localhost:5432/RickAndMorty'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+app.config.from_mapping(
+    SECRET_KEY = 'SECRET_KEY',
+    SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:root@localhost:5432/RickAndMorty',
+    SQLALCHEMY_TRACK_MODIFICATIONS = False,
+
+    SWAGGER = {
+         'title': 'Rick And Morty Backend Api',
+         'uiversion': 3
+    }
+)
+
+# Init the database
 db.init_app(app)
 ma.init_app(app)
 CORS(app)
+swager = Swagger(app)
 
-@app.route('/character', methods=['GET'])
-@cross_origin()
-def character():
-    char_name = request.args.get('name', '')
-    char_page = request.args.get('page', 1)
+# Register blueprints
+app.register_blueprint(character_bp, url_prefix='/character')
 
-    query = User.query.filter(User.name.ilike(f'%{char_name}%')).order_by(User.id.asc()).paginate(page = int(char_page), per_page = 20)
+@app.errorhandler(HTTP_404_NOT_FOUND)
+def handle_404(e):
+  return jsonify({'error': 'page not found'}), HTTP_404_NOT_FOUND
 
-    return jsonify({
-        'page' : query.page,
-        'total_pages' : query.pages,
-        'results' : character_schema.dump(query.items)
-    }), 200
+@app.errorhandler(Exception)
+def handle_exceptions(e):
+  log_exception(e)
+  return jsonify({
+      'success': False,
+      'error': 'Something bad happened, please try again'
+  }), HTTP_500_INTERNAL_SERVER_ERROR
