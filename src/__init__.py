@@ -1,7 +1,6 @@
 from flask import Flask
 from src.database import db, ma
 from src.routes import CORS, character_bp
-from flask_restplus import Api
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:root@localhost:5432/RickAndMorty'
@@ -16,4 +15,4 @@ CORS(app)
 app.register_blueprint(character_bp, url_prefix='/character')
 
 # Swagger documentation
-api = Api(app, title='API Flask Rick and Morty', version='1.0', description='API with the Rick and Morty characters with python flask', prefix='/api')
+#api = Api(app, title='API Flask Rick and Morty', version='1.0', description='API with the Rick and Morty characters with python flask', prefix='/api')
