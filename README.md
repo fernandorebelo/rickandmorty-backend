@@ -8,6 +8,8 @@ It gets the characters with a pagination of 20.
 
 You can specify also a page.
 
+This API has a Swagger documentation.
+
 ## Installation
 
 Clone the project in your machine:
@@ -37,7 +39,11 @@ Run the project:
   $ flask run --debug
 ```
 
-You can use a browser or Postman to access the data.
+Use your browser to access the swagger documentation:
+
+```bash
+  http:localhost/apidocs/
+```
 
 ## API Reference
 
