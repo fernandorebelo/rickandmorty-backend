@@ -2,22 +2,29 @@ from flask import Flask, jsonify
 from src.database import db, ma
 from src.routes import CORS, character_bp
 from flasgger import Swagger
+from src.config.swagger import template, swagger_config
 from src.constants.http_status_codes import *
 from src.utils.exception_tracker_log import log_exception
 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:root@localhost:5432/RickAndMorty'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SWAGGER'] = {
-    'title':'Rick and Morty backend API',
-    'uiversion': 1
-}
+
+app.config.from_mapping(
+    SECRET_KEY = 'SECRET_KEY',
+    SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:root@localhost:5432/RickAndMorty',
+    SQLALCHEMY_TRACK_MODIFICATIONS = False,
+
+    SWAGGER = {
+         'title': 'Rick And Morty Backend Api',
+         'uiversion': 3
+    }
+)
 
 # Init the database
 db.init_app(app)
 ma.init_app(app)
 CORS(app)
+swager = Swagger(app)
 
 # Register blueprints
 app.register_blueprint(character_bp, url_prefix='/character')
