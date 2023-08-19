@@ -3,14 +3,14 @@ from src.database import character_schema, User
 from flask_cors import CORS, cross_origin
 from src.constants.http_status_codes import *
 import math
-#from flasgger import swag_from
+from flasgger import swag_from
 
 character_bp = Blueprint('character_bp', __name__)
 CORS(character_bp)
 
 @character_bp.route('/', methods=['GET'])
 @cross_origin()
-#@swag_from('./docs/search.yaml')
+@swag_from('./docs/search.yaml')
 def character():
     try:
         char_name = request.args.get('name', '')
