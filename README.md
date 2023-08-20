@@ -10,6 +10,20 @@ You can specify also a page.
 
 This API has a Swagger documentation.
 
+## Database
+
+For now you need to have a database created on Postgresql. You need to ensure to have this configurations:
+
+```
+Host : localhost
+Port : 5432
+Database: postgres
+User : postgres
+Password : root
+```
+
+If you would like to test on another database you can change the configurations in the src/constants/http_status_codes.py file.
+
 ## Installation
 
 Clone the project in your machine:
