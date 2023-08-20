@@ -1,3 +1,9 @@
+DATABASE_URI = 'postgresql://postgres:root@localhost:5432/RickAndMorty'
+HOST = 'localhost'
+DATABASE = 'RickAndMorty'
+USER = 'postgres'
+PASSWORD = 'root'
+
 HTTP_200_OK = 200
 HTTP_201_CREATED = 201
 HTTP_202_ACCEPTED = 202
