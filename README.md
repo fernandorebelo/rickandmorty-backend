@@ -30,7 +30,6 @@ Install the requirements
 
 ```bash
   $ pip install -r requirements.txt
-  cd my-project
 ```
 
 Run the project:
@@ -76,3 +75,37 @@ Use your browser to access the swagger documentation:
 | Parameter | Type     | Description |
 | :-------- | :------- | :---------- |
 | `number`  | `string` |             |
+
+## Responses
+
+#### Code 200
+
+```http
+  {
+  "characters": [
+    {
+      "id": 0,
+      "image": "string",
+      "name": "string",
+      "species": "string",
+      "status": "string"
+    }
+  ],
+  "page": 0,
+  "pages": 0,
+  "success": true,
+  "total": 0
+}
+```
+
+#### Code 400
+
+```
+The request was invalid
+```
+
+#### Code 404
+
+```
+No characters were found matching the search criteria
+```
