@@ -1,15 +1,12 @@
 from flask import Blueprint, request, jsonify
-from src.database import character_schema, User
-from flask_cors import CORS, cross_origin
+from src.database import character_schema, Character
 from src.constants.http_status_codes import *
 import math
 from flasgger import swag_from
 
 character_bp = Blueprint('character_bp', __name__)
-CORS(character_bp)
 
 @character_bp.get('/')
-@cross_origin()
 @swag_from('./docs/search.yaml')
 def character():
     try:
@@ -29,7 +26,7 @@ def character():
         
             return jsonify(search_result.get('data')), HTTP_400_BAD_REQUEST
         
-        character_count = User.query.filter(User.name.ilike(f'%{char_name}%')).count()
+        character_count = Character.query.filter(Character.name.ilike(f'%{char_name}%')).count()
 
         if not character_count:
             search_result = {
@@ -52,7 +49,7 @@ def character():
             }
             return jsonify(search_result.get('data')), HTTP_404_NOT_FOUND 
 
-        query = User.query.filter(User.name.ilike(f'%{char_name}%')).order_by(User.id.asc()).paginate(page = int(char_page), per_page = 20)
+        query = Character.query.filter(Character.name.ilike(f'%{char_name}%')).order_by(Character.id.asc()).paginate(page = int(char_page), per_page = 20)
 
         query_data = character_schema.dump(query.items)
 

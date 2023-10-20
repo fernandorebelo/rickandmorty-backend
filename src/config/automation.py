@@ -1,8 +1,10 @@
 
 import json
 import psycopg2
-from src.constants.http_status_codes import *
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 
 json_file = 'src/config/allChars.json'
 
@@ -10,13 +12,13 @@ with open(json_file, 'r', encoding='utf-8') as file:
     directory_path = json.load(file)
 
 # Database connection information
-host = HOST
-database = DATABASE
-user = USER
-password = PASSWORD
-
+host = os.getenv("HOST")
+database = os.getenv("DATABASE")
+user = os.getenv("USER")
+password = os.getenv("PASSWORD")
+print("passei aq")
 def populate_db():
-
+    print('entrei aqui')
     # Establish a connection to the PostgreSQL database
     connection = psycopg2.connect(
         host=host,
@@ -47,6 +49,9 @@ def populate_db():
 
         # Execute the SQL query with the extracted data
         cursor.execute(sql_query, (name, status, species, type_char, gender, origin_name, location_name, image))
+
+        print(item['id'])
+        connection.commit()
 
     # Commit the changes to the database
     connection.commit()
